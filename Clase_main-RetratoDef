@@ -1,0 +1,47 @@
+package retratodef;
+
+import java.awt.Dimension;
+import java.io.IOException;
+import javax.swing.JFrame;
+
+
+
+public class RetratoDef extends Thread{
+
+    ISonido sound;
+    
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        
+        RetratoLogin window0 = new RetratoLogin();
+        
+        /*window0.setVisible(true);
+        window0.setPreferredSize(new Dimension(500,600));
+        window0.setResizable(false);
+        window0.pack();
+        window0.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
+        
+        RetratoWindow window = new RetratoWindow();
+        window.setVisible(true);
+        window.setPreferredSize(new Dimension(1365,730));
+        window.setResizable(true);
+        window.pack();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        String filepath = "Metal Gear Solid 2 Soundtrack - Tanker.wav";
+
+        MenuMusic musicObject = new MenuMusic();
+
+        musicObject.playMusic(filepath);
+
+        /*//RetratoDef wav = new RetratoDef();
+        wav.menuSound();*/
+        
+    }
+    
+    public void menuSound(){
+        
+        sound = new SonidoMenu();
+        sound.sonido();
+        
+    }
+}

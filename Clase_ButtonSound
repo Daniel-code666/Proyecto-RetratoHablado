@@ -1,0 +1,37 @@
+package retratodef;
+
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
+
+public class ButtonSound extends Thread{
+    
+    void playSound(String musicLocationB){
+        
+        try
+        {
+            File musicPathB = new File(musicLocationB);
+
+            if(musicPathB.exists())
+            {
+                AudioInputStream audioInputB = AudioSystem.getAudioInputStream(musicPathB);
+                Clip clipB = AudioSystem.getClip();
+                clipB.open(audioInputB);
+                clipB.start(); 
+                
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "file not found");
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        
+    }
+    
+}

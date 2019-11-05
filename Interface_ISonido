@@ -1,0 +1,5 @@
+package retratodef;
+
+public interface ISonido {
+    public void sonido();
+}

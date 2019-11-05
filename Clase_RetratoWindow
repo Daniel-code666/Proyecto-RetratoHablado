@@ -1,0 +1,1720 @@
+package retratodef;
+
+import com.qoppa.pdfWriter.PDFPrinterJob;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import static retratodef.RetratoLogin.aux1;
+
+
+public class RetratoWindow extends JFrame implements ActionListener, Serializable{
+    
+    ArrayList <User> lista = new ArrayList<>();
+    User u;
+    
+    JButton bt1, bt2, bt3, bt4, bt5, btStart;
+    TextField user, pass;
+    JButton btSave, btDel, btSearch;
+    JButton bt6, bt7, bt8, bt9, bt10, bt11, bt12, bt13, bt14, bt15, bt16, bt17, bt18, bt19, bt20;
+    JButton btM, btF;
+    JButton btBack, btExit;
+    JLabel l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15;
+    JLabel hair;
+    JLabel userName, tittle;
+    RetratoLabels earsM;
+    RetratoLabels boca;
+    RetratoLabels eyes;
+    RetratoLabels nose;
+    RetratoLabels cejas;
+    //JPanel jPanelName;
+    JLabel name, setN;
+    //User userDat = new User();
+    
+    
+    
+    public RetratoWindow(){
+		
+		super("No trabajo para la Fiscalía...");
+
+		Container container = getContentPane();
+                container.setLayout(null);
+                container.setBackground(Color.white);
+                
+                setHairL();
+                setBocaL();
+                setEyesL();
+                setNoseL();
+                setCejasL();
+                setEarsM();
+                hairSelect();
+                eyesSelect();
+                eyeBrownsSelect();
+                bocaSelect();
+                noseSelect();
+                setPortrait();
+                menuHair();
+                menuEyes();
+                menuNose();
+                menuCejas();
+                menuBoca();
+                sexSelect();
+                buttons();
+                setName();
+                u = new User();
+                
+                /*try
+                {
+                 // create a PDF Printer Job
+                 PDFPrinterJob printer = (PDFPrinterJob)PDFPrinterJob.getPrinterJob ();
+                 // set the printable object 
+                 printer.setPrintable (new RetratoWindow());
+                 // set number of copies to 1 
+                 printer.setCopies (1);
+                 // print and save the document
+                 printer.print("C:/Users/danie/Desktop/img.pdf");
+                 // output done message 
+                 System.out.println("Done!");
+                }
+                catch (Throwable t)
+                {
+                 t.printStackTrace();
+                }*/
+    }
+
+    public void setName(){
+        
+        Container container = getContentPane();
+        
+        btSave = new JButton("Register");
+        btSave.setBounds(60, 55, 85, 20);
+        btSave.setFont(new Font("consolas",Font.PLAIN,10));
+        btSave.setForeground(Color.black);
+        btSave.setVisible(true);
+        container.add(btSave);
+        btSave.addActionListener(this);
+        
+        btDel = new JButton("Delete");
+        btDel.setBounds(60, 75, 85, 20);
+        btDel.setFont(new Font("consolas",Font.PLAIN,10));
+        btDel.setForeground(Color.black);
+        btDel.setVisible(true);
+        container.add(btDel);
+        btDel.addActionListener(this);
+        
+        btSearch = new JButton("Search");
+        btSearch.setBounds(60, 95, 85, 20);
+        btSearch.setFont(new Font("consolas",Font.PLAIN,10));
+        btSearch.setForeground(Color.black);
+        btSearch.setVisible(true);
+        container.add(btSearch);
+        btSearch.addActionListener(this);
+        
+        user = new TextField();
+        user.setBounds(60, 15, 88, 20);
+        user.setFont(new Font("consolas",Font.PLAIN,9));
+        user.setForeground(Color.black);
+        user.setVisible(true);
+        container.add(user);
+        
+        pass = new TextField();
+        pass.setBounds(60, 35, 88, 20);
+        pass.setFont(new Font("consolas",Font.PLAIN,9));
+        pass.setForeground(Color.black);
+        pass.setVisible(true);
+        container.add(pass);
+        
+        userName = new JLabel("User:");
+        userName.setBounds(1, 18, 35, 10);
+        userName.setFont(new Font("consolas",Font.BOLD,12));
+        userName.setForeground(Color.black);
+        userName.setVisible(true);
+        container.add(userName);
+        
+        tittle = new JLabel("Pass:");
+        tittle.setBounds(1, 38, 35, 10);
+        tittle.setFont(new Font("consolas",Font.BOLD,12));
+        tittle.setForeground(Color.black);
+        tittle.setVisible(true);
+        container.add(tittle);
+        
+        name = new JLabel("User: ");
+        name.setBounds(250, 650, 90, 28);
+        name.setFont(new Font("consolas",Font.PLAIN,15));
+        name.setForeground(Color.black);
+        name.setVisible(true);
+        container.add(name);
+    
+        setN = new JLabel();
+        setN.setBounds(310, 650, 90, 28);
+        setN.setFont(new Font("consolas",Font.PLAIN,15));
+        setN.setForeground(Color.black);
+        setN.setVisible(true);
+        container.add(setN);    
+    }
+    
+    public void buttons(){
+        
+        Container container = getContentPane();
+        
+        btExit = new JButton("Salir");
+        btExit.setBounds(1258, 650, 90, 28);
+        btExit.setFont(new Font("consolas",Font.PLAIN,15));
+        btExit.setForeground(Color.black);
+        btExit.setVisible(true);
+        container.add(btExit);
+        btExit.addActionListener(this);
+        
+        /*btBack = new JButton("Atrás");
+        btBack.setBounds(250, 650, 90, 28);
+        btBack.setFont(new Font("consolas",Font.PLAIN,15));
+        btBack.setForeground(Color.black);
+        btBack.setVisible(true);
+        container.add(btBack);
+        btBack.addActionListener(this);*/
+        
+    }
+    
+    public void sexSelect(){
+        
+        Container container = getContentPane();
+        
+        btM = new JButton("M");
+        btM.setFont(new Font("consolas",Font.BOLD,18));
+        btM.setForeground(Color.black);
+        btM.setBounds(1202, 10, 70, 40);
+        btM.setBackground(Color.blue);
+        btM.setEnabled(false);
+        container.add(btM);
+        btM.addActionListener(this);
+        
+        btF = new JButton("F");
+        btF.setFont(new Font("consolas",Font.BOLD,18));
+        btF.setForeground(Color.black);
+        btF.setBounds(1278, 10, 70, 40);
+        btF.setBackground(Color.pink);
+        btF.setEnabled(false);
+        container.add(btF);
+        btF.addActionListener(this);
+        
+    }
+    
+    public void setPortrait(){
+        Container container = getContentPane();
+        
+        btStart = new JButton("Comenzar");
+        btStart.setFont(new Font("consolas",Font.BOLD,10));
+        btStart.setForeground(Color.black);
+        btStart.setBounds(1202, 69, 145, 40);
+        btStart.setBackground(Color.lightGray);
+        container.add(btStart);
+        btStart.addActionListener(this);
+        btStart.setEnabled(false);
+    }
+    
+    public void setHairL(){
+        Container container = getContentPane();
+        hair = new JLabel("");
+        hair.setBounds(370, 120, 400, 500);
+        
+        container.add(hair);
+        hair.setVisible(false);
+    }
+    
+    public void setBocaL(){
+        Container container = getContentPane();
+        boca = new RetratoLabels("");
+        boca.setBounds(900, 400, 115, 45);
+        
+        container.add(boca);
+        boca.setVisible(false);
+    }
+    
+    public void setEyesL(){
+        Container container = getContentPane();
+        eyes = new RetratoLabels("");
+        eyes.setBounds(870, 260, 175, 75);
+        
+        container.add(eyes);
+        eyes.setVisible(false);
+    }
+    
+    public void setNoseL(){
+        Container container = getContentPane();
+        nose = new RetratoLabels("");
+        nose.setBounds(870, 340, 175, 55);
+        
+        container.add(nose);
+        nose.setVisible(false);
+    }
+    
+    public void setCejasL(){
+        Container container = getContentPane();
+        cejas = new RetratoLabels("");
+        cejas.setBounds(870, 220, 185, 75);
+        
+        container.add(cejas);   
+        cejas.setVisible(false);
+    }
+    
+    public void setEarsM(){
+        
+        Container container = getContentPane();
+        earsM = new RetratoLabels("");
+        earsM.setBounds(870, 220, 185, 75);
+        
+        container.add(earsM);   
+        earsM.setVisible(false);
+        
+    }
+   
+    public void hairSelect(){
+        Container container = getContentPane();
+        bt1 = new JButton("Cabello");
+        bt1.setFont(new Font("consolas",Font.BOLD,22));
+        bt1.setForeground(Color.white);
+        bt1.setBounds(200, 10, 200, 100);
+        bt1.setBackground(Color.DARK_GRAY);
+        container.add(bt1);
+        bt1.addActionListener(this);
+        bt1.setEnabled(false);
+    }
+    public void eyesSelect(){
+        Container container = getContentPane();
+        bt2 = new JButton("Ojos");
+        bt2.setFont(new Font("consolas",Font.BOLD,22));
+        bt2.setForeground(Color.white);
+        bt2.setBounds(400, 10, 200, 100);
+        bt2.setBackground(Color.DARK_GRAY);
+        container.add(bt2);
+        bt2.addActionListener(this);
+        bt2.setEnabled(false);
+    }
+    public void eyeBrownsSelect(){
+        Container container = getContentPane();
+        bt3 = new JButton("Cejas");
+        bt3.setFont(new Font("consolas",Font.BOLD,22));
+        bt3.setForeground(Color.white);
+        bt3.setBounds(600, 10, 200, 100);
+        bt3.setBackground(Color.DARK_GRAY);
+        container.add(bt3);
+        bt3.addActionListener(this);
+        bt3.setEnabled(false);
+    }
+    public void noseSelect(){
+        Container container = getContentPane();
+        bt4 = new JButton("Nariz");
+        bt4.setFont(new Font("consolas",Font.BOLD,22));
+        bt4.setForeground(Color.white);
+        bt4.setBounds(800, 10, 200, 100);
+        bt4.setBackground(Color.DARK_GRAY);
+        container.add(bt4);
+        bt4.addActionListener(this);
+        bt4.setEnabled(false);
+    }
+    public void bocaSelect(){
+        Container container = getContentPane();
+        bt5 = new JButton("Boca");
+        bt5.setFont(new Font("consolas",Font.BOLD,22));
+        bt5.setForeground(Color.white);
+        bt5.setBounds(1000, 10, 200, 100);
+        bt5.setBackground(Color.DARK_GRAY);
+        container.add(bt5);
+        bt5.addActionListener(this);
+        bt5.setEnabled(false);
+    }
+    
+    
+    
+    public void menuHair(){
+        Container container = getContentPane();
+        l7 = new JLabel();
+        container.add(l7);
+        
+        bt6 = new JButton("1");
+        bt6.setBounds(145, 125, 60, 170);
+        container.add(bt6);
+        bt6.setVisible(false);
+        bt6.setEnabled(false);
+        bt6.addActionListener(this);
+        
+        l8 = new JLabel();
+        container.add(l8);
+        
+        bt7 = new JButton("2");
+        bt7.setBounds(145, 305, 60, 185);
+        container.add(bt7);
+        bt7.setVisible(false);
+        bt7.setEnabled(false);
+        bt7.addActionListener(this);
+        
+        
+        l9 = new JLabel();
+        container.add(l9);
+        
+        bt8 = new JButton("3");
+        bt8.setBounds(145, 500, 60, 170);
+        container.add(bt8);
+        bt8.setVisible(false);
+        bt8.setEnabled(false);
+        bt8.addActionListener(this);
+        
+    }
+    
+    public void menuEyes(){
+        
+        Container container = getContentPane();
+        l6 = new JLabel();
+        container.add(l6);
+        
+        bt9 = new JButton("4");
+        bt9.setBounds(145, 125, 60, 170);
+        container.add(bt9);
+        bt9.setVisible(false);
+        bt9.setEnabled(false);
+        bt9.addActionListener(this);
+        
+        l5 = new JLabel();
+        container.add(l5);
+        
+        bt10 = new JButton("5");
+        bt10.setBounds(145, 305, 60, 185);
+        container.add(bt10);
+        bt10.setVisible(false);
+        bt10.setEnabled(false);
+        bt10.addActionListener(this);
+        
+        l4 = new JLabel();
+        container.add(l4);
+        
+        bt11 = new JButton("6");
+        bt11.setBounds(145, 500, 60, 170);
+        container.add(bt11);
+        bt11.setVisible(false);
+        bt11.setEnabled(false);
+        bt11.addActionListener(this);
+    }
+    
+    public void menuNose(){
+        
+        Container container = getContentPane();
+        l3 = new JLabel();
+        container.add(l3);
+        
+        bt12 = new JButton("10");
+        bt12.setBounds(145, 125, 60, 170);
+        container.add(bt12);
+        bt12.setVisible(false);
+        bt12.setEnabled(false);
+        bt12.addActionListener(this);
+        
+        l2 = new JLabel();
+        container.add(l2);
+        
+        bt13 = new JButton("11");
+        bt13.setBounds(145, 305, 60, 185);
+        container.add(bt13);
+        bt13.setVisible(false);
+        bt13.setEnabled(false);
+        bt13.addActionListener(this);
+        
+        l1 = new JLabel();
+        container.add(l1);
+        
+        bt14 = new JButton("12");
+        bt14.setBounds(145, 500, 60, 170);
+        container.add(bt14);
+        bt14.setVisible(false);
+        bt14.setEnabled(false);
+        bt14.addActionListener(this);
+        
+    }
+    
+    public void menuCejas(){
+        
+        Container container = getContentPane();
+        l10 = new JLabel();
+        container.add(l10);
+        
+        bt15 = new JButton("7");
+        bt15.setBounds(145, 125, 60, 170);
+        container.add(bt15);
+        bt15.setVisible(false);
+        bt15.setEnabled(false);
+        bt15.addActionListener(this);
+        
+        l11 = new JLabel();
+        
+        container.add(l11);
+        
+        bt16 = new JButton("8");
+        bt16.setBounds(145, 305, 60, 185);
+        container.add(bt16);
+        bt16.setVisible(false);
+        bt16.setEnabled(false);
+        bt16.addActionListener(this);
+        
+        l12 = new JLabel();
+
+        container.add(l12);
+        
+        bt17 = new JButton("9");
+        bt17.setBounds(145, 500, 60, 170);
+        container.add(bt17);
+        bt17.setVisible(false);
+        bt17.setEnabled(false);
+        bt17.addActionListener(this);
+        
+    }
+    
+    public void menuBoca(){
+        
+        Container container = getContentPane();
+        l13 = new JLabel();
+        container.add(l13);
+        
+        bt18 = new JButton("13");
+        bt18.setBounds(145, 125, 60, 170);
+        container.add(bt18);
+        bt18.setVisible(false);
+        bt18.setEnabled(false);
+        bt18.addActionListener(this);
+        
+        l14 = new JLabel();
+        container.add(l14);
+        
+        bt19 = new JButton("14");
+        bt19.setBounds(145, 305, 60, 185);
+        container.add(bt19);
+        bt19.setVisible(false);
+        bt19.setEnabled(false);
+        bt19.addActionListener(this);
+        
+        l15 = new JLabel();
+        container.add(l15);
+        
+        bt20 = new JButton("15");
+        bt20.setBounds(145, 500, 60, 170);
+        container.add(bt20);
+        bt20.setVisible(false);
+        bt20.setEnabled(false);
+        bt20.addActionListener(this);
+        
+    }
+    
+    String filepathB = "1.wav";
+    
+    String filepathC = "2.wav";
+    
+    boolean act = false;
+    boolean act1 = false;
+    boolean act2 = false;
+    
+    
+    public void actionPerformed (ActionEvent e) {
+        	            
+        String nameButton = e.getActionCommand();      
+        
+        ButtonSound musicObjectB = new ButtonSound();
+        
+        ButtonSound2 musicObjectC = new ButtonSound2();
+        
+        boolean reg = false;
+        if("Register".equalsIgnoreCase(nameButton))
+        {
+            if(user.getText().isEmpty() || pass.getText().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "Debe igresar todos los datos");
+            }
+            else
+            {
+                reg = true;
+                act1 = true;
+                u.setName(user.getText());
+                u.setPassword(pass.getText());
+                lista.add(new User(user.getText(), pass.getText()));
+                setN.setText(user.getText());
+                
+                try
+                {
+                    FileOutputStream fos = new FileOutputStream("C:/Users/danie/Desktop/datosUsuario2.dat");
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(lista);
+                    oos.close();
+                    fos.close();
+                }
+                catch(IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
+               
+                btM.setEnabled(true);
+                btF.setEnabled(true);
+            }
+            bt1.setEnabled(false);
+            bt2.setEnabled(false);
+            bt3.setEnabled(false);
+            bt4.setEnabled(false);
+            bt5.setEnabled(false);
+        }
+        
+        if("Search".equalsIgnoreCase(nameButton))
+        {
+            if(user.getText().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "Debe ingresar el campo del nombre");
+            }
+            else
+            {
+                search(user.getText(), pass.getText());
+                
+                try
+                {
+                    FileInputStream fis = new FileInputStream("C:/Users/danie/Desktop/datosUsuario2.dat");
+                    ObjectInputStream ois = new ObjectInputStream(fis);
+
+                    lista = (ArrayList) ois.readObject();
+
+                    ois.close();
+                    fis.close();
+                } 
+                catch (IOException ioe) 
+                {
+                    ioe.printStackTrace();
+                    return;
+                } 
+                catch (ClassNotFoundException c) 
+                {
+                    System.out.println("Class not found");
+                    c.printStackTrace();
+                    return;
+                }
+                
+                Iterator it = lista.iterator();
+                while ( it.hasNext() )
+                { 
+                    Object objeto = it.next(); 
+                    User p = (User)objeto;
+                    System.out.println(p); 
+                } 
+            }
+            bt1.setEnabled(false);
+            bt2.setEnabled(false);
+            bt3.setEnabled(false);
+            bt4.setEnabled(false);
+            bt5.setEnabled(false);
+        }
+        
+        if("Delete".equalsIgnoreCase(nameButton))
+        {
+            if(user.getText().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "Debe ingresar el campo del nombre");
+            }
+            else
+            {
+                delete(user.getText(), pass.getText());
+            }
+            bt1.setEnabled(false);
+            bt2.setEnabled(false);
+            bt3.setEnabled(false);
+            bt4.setEnabled(false);
+            bt5.setEnabled(false);
+        }
+        
+        if("Salir".equalsIgnoreCase(nameButton))
+        {
+            System.exit(0);
+        }
+        /*if("Atrás".equalsIgnoreCase(nameButton))
+        {
+            RetratoLogin winB = null;
+            try {
+                winB = new RetratoLogin();
+            } catch (IOException ex) {
+                Logger.getLogger(RetratoWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(RetratoWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            winB.setVisible(true);
+            this.setVisible(false);
+            
+        }*/
+        
+        if("Comenzar".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC);
+            hair.setVisible(true);
+            boca.setVisible(true);
+            eyes.setVisible(true);
+            cejas.setVisible(true);
+            nose.setVisible(true);
+            earsM.setVisible(false);
+            bt1.setEnabled(true);
+            bt2.setEnabled(true);
+            bt3.setEnabled(true);
+            bt4.setEnabled(true);
+            bt5.setEnabled(true);
+        }
+        else
+        {
+            musicObjectC.playSound2(filepathC);
+            hair.setVisible(true);
+            boca.setVisible(true);
+            eyes.setVisible(true);
+            cejas.setVisible(true);
+            nose.setVisible(true);
+            earsM.setVisible(true);
+            bt1.setEnabled(true);
+            bt2.setEnabled(true);
+            bt3.setEnabled(true);
+            bt4.setEnabled(true);
+            bt5.setEnabled(true);
+        }
+        if("M".equalsIgnoreCase(nameButton))
+        {
+            musicObjectB.playSound(filepathB);
+            
+            act = true;
+            hair.setBounds(370, 120, 300, 350);
+            ImageIcon img1 = new ImageIcon(getClass().getResource("/imagesM/cabello.png"));
+            ImageIcon icon = new ImageIcon(img1.getImage().getScaledInstance(hair.getWidth(),hair.getHeight(),Image.SCALE_DEFAULT));
+            hair.setIcon(icon);
+            btStart.setEnabled(true);
+            
+            //-Menu-HairM----------------------------------------------------------------------------------------------------------//
+            
+            l7.setBounds(10, 125, 130, 180);
+            ImageIcon img6 = new ImageIcon(getClass().getResource("/imagesM/cabello.png"));
+            ImageIcon icon6 = new ImageIcon(img6.getImage().getScaledInstance(l7.getWidth(),l7.getHeight(),Image.SCALE_DEFAULT));
+            l7.setIcon(icon6);
+            l7.setVisible(false);
+            bt6.setVisible(false);
+            bt6.setEnabled(false);
+            
+            
+            l8.setBounds(10, 315, 130, 180);
+            ImageIcon img7 = new ImageIcon(getClass().getResource("/imagesM/cabello2.png"));
+            ImageIcon icon7 = new ImageIcon(img7.getImage().getScaledInstance(l8.getWidth(),l8.getHeight(),Image.SCALE_DEFAULT));
+            l8.setIcon(icon7);
+            l8.setVisible(false);
+            bt7.setVisible(false);
+            bt7.setEnabled(false);
+            
+            l9.setBounds(10, 505, 130, 180);
+            ImageIcon img8 = new ImageIcon(getClass().getResource("/imagesM/cabello5.png"));
+            ImageIcon icon8 = new ImageIcon(img8.getImage().getScaledInstance(l9.getWidth(),l9.getHeight(),Image.SCALE_DEFAULT));
+            l9.setIcon(icon8);
+            l9.setVisible(false);
+            bt8.setVisible(false);
+            bt8.setEnabled(false);
+            
+            //---------------------------------------------------------------------------------------------------------------------//
+            
+            boca.setBounds(900, 400, 165, 60);
+            ImageIcon img2 = new ImageIcon(getClass().getResource("/imagesM/boca4.png"));
+            ImageIcon icon2 = new ImageIcon(img2.getImage().getScaledInstance(boca.getWidth(),boca.getHeight(),Image.SCALE_DEFAULT));
+            boca.setIcon(icon2);
+            
+            //-Menu-BocaM----------------------------------------------------------------------------------------------------------//
+            
+            l13.setBounds(-10, 175, 165, 60);
+            ImageIcon img18 = new ImageIcon(getClass().getResource("/imagesM/boca4.png"));
+            ImageIcon icon18 = new ImageIcon(img18.getImage().getScaledInstance(l13.getWidth(),l13.getHeight(),Image.SCALE_DEFAULT));
+            l13.setIcon(icon18);
+            l13.setVisible(false);
+            bt9.setVisible(false);
+            bt9.setEnabled(false);
+
+            l14.setBounds(10, 365, 155, 85);
+            ImageIcon img19 = new ImageIcon(getClass().getResource("/imagesM/boca2.png"));
+            ImageIcon icon19 = new ImageIcon(img19.getImage().getScaledInstance(l14.getWidth(),l14.getHeight(),Image.SCALE_DEFAULT));
+            l14.setIcon(icon19);
+            l14.setVisible(false);
+            bt10.setVisible(false);
+            bt10.setEnabled(false);
+
+            l15.setBounds(-15, 545, 195, 75);
+            ImageIcon img20 = new ImageIcon(getClass().getResource("/imagesM/boca5.png"));
+            ImageIcon icon120 = new ImageIcon(img20.getImage().getScaledInstance(l15.getWidth(),l15.getHeight(),Image.SCALE_DEFAULT));
+            l15.setIcon(icon120);
+            l15.setVisible(false);
+            bt11.setVisible(false);
+            bt11.setEnabled(false);
+            //---------------------------------------------------------------------------------------------------------------------//
+            
+            eyes.setBounds(870, 260, 175, 75);
+            ImageIcon img3 = new ImageIcon(getClass().getResource("/imagesM/ojos1.png"));
+            ImageIcon icon3 = new ImageIcon(img3.getImage().getScaledInstance(eyes.getWidth(),eyes.getHeight(),Image.SCALE_DEFAULT));
+            eyes.setIcon(icon3);
+            
+            //-Menu-EyesM----------------------------------------------------------------------------------------------------------//
+            
+            l6.setBounds(10, 175, 125, 75);
+            ImageIcon img9 = new ImageIcon(getClass().getResource("/imagesM/ojos1.png"));
+            ImageIcon icon9 = new ImageIcon(img9.getImage().getScaledInstance(l6.getWidth(),l6.getHeight(),Image.SCALE_DEFAULT));
+            l6.setIcon(icon9);
+            l6.setVisible(false);
+            bt15.setVisible(false);
+            bt15.setEnabled(false);
+
+            l5.setBounds(-20, 365, 185, 75);
+            ImageIcon img10 = new ImageIcon(getClass().getResource("/imagesM/ojos5.png"));
+            ImageIcon icon10 = new ImageIcon(img10.getImage().getScaledInstance(l5.getWidth(),l5.getHeight(),Image.SCALE_DEFAULT));
+            l5.setIcon(icon10);
+            l5.setVisible(false);
+            bt16.setVisible(false);
+            bt16.setEnabled(false);
+            
+            l4.setBounds(-10, 545, 175, 75);
+            ImageIcon img11 = new ImageIcon(getClass().getResource("/imagesM/ojos3.png"));
+            ImageIcon icon11 = new ImageIcon(img11.getImage().getScaledInstance(l4.getWidth(),l4.getHeight(),Image.SCALE_DEFAULT));
+            l4.setIcon(icon11);
+            l4.setVisible(false);
+            bt17.setVisible(false);
+            bt17.setEnabled(false);
+            
+            //---------------------------------------------------------------------------------------------------------------------//
+            
+            nose.setBounds(870, 340, 175, 55);
+            ImageIcon img4 = new ImageIcon(getClass().getResource("/imagesM/nariz5.png"));
+            ImageIcon icon4 = new ImageIcon(img4.getImage().getScaledInstance(nose.getWidth(),nose.getHeight(),Image.SCALE_DEFAULT));
+            nose.setIcon(icon4);
+            
+            //-Menu-NoseM----------------------------------------------------------------------------------------------------------//
+            
+            l3.setBounds(-10, 175, 185, 80);
+            ImageIcon img12 = new ImageIcon(getClass().getResource("/imagesM/nariz2.png"));
+            ImageIcon icon12 = new ImageIcon(img12.getImage().getScaledInstance(l3.getWidth(),l3.getHeight(),Image.SCALE_DEFAULT));
+            l3.setIcon(icon12);
+            l3.setVisible(false);
+            bt12.setVisible(false);
+            bt12.setEnabled(false);
+
+            l2.setBounds(-20, 365, 185, 65);
+            ImageIcon img13 = new ImageIcon(getClass().getResource("/imagesM/nariz5.png"));
+            ImageIcon icon13 = new ImageIcon(img13.getImage().getScaledInstance(l2.getWidth(),l2.getHeight(),Image.SCALE_DEFAULT));
+            l2.setIcon(icon13);
+            l2.setVisible(false);
+            bt13.setVisible(false);
+            bt13.setEnabled(false);
+            
+            l1.setBounds(-20, 545, 195, 70);
+            ImageIcon img14 = new ImageIcon(getClass().getResource("/imagesM/nariz8.png"));
+            ImageIcon icon14 = new ImageIcon(img14.getImage().getScaledInstance(l1.getWidth(),l1.getHeight(),Image.SCALE_DEFAULT));
+            l1.setIcon(icon14);
+            l1.setVisible(false);
+            bt14.setVisible(false);
+            bt14.setEnabled(false);
+            
+            //---------------------------------------------------------------------------------------------------------------------//            
+            cejas.setBounds(870, 220, 185, 75);
+            ImageIcon img5 = new ImageIcon(getClass().getResource("/imagesM/cejas1.png"));
+            ImageIcon icon5 = new ImageIcon(img5.getImage().getScaledInstance(cejas.getWidth(),cejas.getHeight(),Image.SCALE_DEFAULT));
+            cejas.setIcon(icon5);
+            
+            //-Menu-CejasM---------------------------------------------------------------------------------------------------------//
+            
+            l10.setBounds(10, 175, 125, 75);
+            ImageIcon img15 = new ImageIcon(getClass().getResource("/imagesM/cejas1.png"));
+            ImageIcon icon15 = new ImageIcon(img15.getImage().getScaledInstance(l10.getWidth(),l10.getHeight(),Image.SCALE_DEFAULT));
+            l10.setIcon(icon15);
+            l10.setVisible(false);
+            bt18.setVisible(false);
+            bt18.setEnabled(false);
+            
+            l11.setBounds(10, 365, 130, 85);
+            ImageIcon img16 = new ImageIcon(getClass().getResource("/imagesM/cejas2.png"));
+            ImageIcon icon16 = new ImageIcon(img16.getImage().getScaledInstance(l11.getWidth(),l11.getHeight(),Image.SCALE_DEFAULT));
+            l11.setIcon(icon16);
+            l11.setVisible(false);
+            bt19.setVisible(false);
+            bt19.setEnabled(false);
+            
+            l12.setBounds(7, 545, 145, 75);
+            ImageIcon img17 = new ImageIcon(getClass().getResource("/imagesM/cejas4.png"));
+            ImageIcon icon17 = new ImageIcon(img17.getImage().getScaledInstance(l12.getWidth(),l12.getHeight(),Image.SCALE_DEFAULT));
+            l12.setIcon(icon17);
+            l12.setVisible(false);
+            bt20.setVisible(false);
+            bt20.setEnabled(false);
+            
+            //--------------------------------------------------------------------------------------------------------------------//
+            
+            earsM.setBounds(870, 180, 240, 65);
+            ImageIcon imgE = new ImageIcon(getClass().getResource("/imagesM/orejas2a.png"));
+            ImageIcon iconE = new ImageIcon(imgE.getImage().getScaledInstance(earsM.getWidth(),earsM.getHeight(),Image.SCALE_DEFAULT));
+            
+            earsM.setIcon(iconE);
+        }
+        if("F".equalsIgnoreCase(nameButton))
+        {
+            musicObjectB.playSound(filepathB);
+            
+            earsM.setVisible(false);
+            act = false;
+            hair.setBounds(370, 120, 400, 500);
+            ImageIcon img1 = new ImageIcon(getClass().getResource("/images/cabello1.png"));
+            ImageIcon icon = new ImageIcon(img1.getImage().getScaledInstance(hair.getWidth(),hair.getHeight(),Image.SCALE_DEFAULT));
+            hair.setIcon(icon);
+            //-Menu-Hair---------------------------------------------------------------------------------------------------------------------//
+            l7.setBounds(10, 125, 130, 180);
+            ImageIcon img6 = new ImageIcon(getClass().getResource("/images/cabello1.png"));
+            ImageIcon icon6 = new ImageIcon(img6.getImage().getScaledInstance(l7.getWidth(),l7.getHeight(),Image.SCALE_DEFAULT));
+            l7.setIcon(icon6);
+            l7.setVisible(false);
+            bt6.setVisible(false);
+            bt6.setEnabled(false);
+            
+            l8.setBounds(10, 315, 130, 180);
+            ImageIcon img7 = new ImageIcon(getClass().getResource("/images/cabello2.png"));
+            ImageIcon icon7 = new ImageIcon(img7.getImage().getScaledInstance(l8.getWidth(),l8.getHeight(),Image.SCALE_DEFAULT));
+            l8.setIcon(icon7);
+            l8.setVisible(false);
+            bt7.setVisible(false);
+            bt7.setEnabled(false);
+            
+            l9.setBounds(10, 505, 130, 180);
+            ImageIcon img8 = new ImageIcon(getClass().getResource("/images/cabello5.png"));
+            ImageIcon icon8 = new ImageIcon(img8.getImage().getScaledInstance(l9.getWidth(),l9.getHeight(),Image.SCALE_DEFAULT));
+            l9.setIcon(icon8);
+            l9.setVisible(false);
+            bt8.setVisible(false);
+            bt8.setEnabled(false);
+
+            //-------------------------------------------------------------------------------------------------------------------------//
+            
+            boca.setBounds(900, 400, 115, 45);
+            ImageIcon img2 = new ImageIcon(getClass().getResource("/images/boca1.png"));
+            ImageIcon icon2 = new ImageIcon(img2.getImage().getScaledInstance(boca.getWidth(),boca.getHeight(),Image.SCALE_DEFAULT));
+            boca.setIcon(icon2);
+            
+            //-Menu-Boca---------------------------------------------------------------------------------------------------------------//
+            
+            l13.setBounds(10, 175, 125, 75);
+            ImageIcon img18 = new ImageIcon(getClass().getResource("/images/boca1.png"));
+            ImageIcon icon18 = new ImageIcon(img18.getImage().getScaledInstance(l13.getWidth(),l13.getHeight(),Image.SCALE_DEFAULT));
+            l13.setIcon(icon18);
+            l13.setVisible(false);
+            bt9.setVisible(false);
+            bt9.setEnabled(false);
+
+            l14.setBounds(10, 365, 155, 85);
+            ImageIcon img19 = new ImageIcon(getClass().getResource("/images/boca2.png"));
+            ImageIcon icon19 = new ImageIcon(img19.getImage().getScaledInstance(l14.getWidth(),l14.getHeight(),Image.SCALE_DEFAULT));
+            l14.setIcon(icon19);
+            l14.setVisible(false);
+            bt10.setVisible(false);
+            bt10.setEnabled(false);
+
+            l15.setBounds(10, 545, 155, 75);
+            ImageIcon img20 = new ImageIcon(getClass().getResource("/images/boca3.png"));
+            ImageIcon icon120 = new ImageIcon(img20.getImage().getScaledInstance(l15.getWidth(),l15.getHeight(),Image.SCALE_DEFAULT));
+            l15.setIcon(icon120);
+            l15.setVisible(false);
+            bt11.setVisible(false);
+            bt11.setEnabled(false);
+            
+            //-------------------------------------------------------------------------------------------------------------------------//
+            eyes.setBounds(870, 260, 175, 75);
+            ImageIcon img3 = new ImageIcon(getClass().getResource("/images/ojos1.png"));
+            ImageIcon icon3 = new ImageIcon(img3.getImage().getScaledInstance(eyes.getWidth(),eyes.getHeight(),Image.SCALE_DEFAULT));
+            eyes.setIcon(icon3);
+            
+            //-Menu-Eyes---------------------------------------------------------------------------------------------------------------//
+            
+            l6.setBounds(10, 175, 125, 75);
+            ImageIcon img9 = new ImageIcon(getClass().getResource("/images/ojos1.png"));
+            ImageIcon icon9 = new ImageIcon(img9.getImage().getScaledInstance(l6.getWidth(),l6.getHeight(),Image.SCALE_DEFAULT));
+            l6.setIcon(icon9);
+            l6.setVisible(false);
+            bt12.setVisible(false);
+            bt12.setEnabled(false);
+
+            l5.setBounds(10, 365, 155, 85);
+            ImageIcon img10 = new ImageIcon(getClass().getResource("/images/ojos2.png"));
+            ImageIcon icon10 = new ImageIcon(img10.getImage().getScaledInstance(l5.getWidth(),l5.getHeight(),Image.SCALE_DEFAULT));
+            l5.setIcon(icon10);
+            l5.setVisible(false);
+            bt13.setVisible(false);
+            bt13.setEnabled(false);
+            
+            l4.setBounds(10, 545, 155, 75);
+            ImageIcon img11 = new ImageIcon(getClass().getResource("/images/ojos3.png"));
+            ImageIcon icon11 = new ImageIcon(img11.getImage().getScaledInstance(l4.getWidth(),l4.getHeight(),Image.SCALE_DEFAULT));
+            l4.setIcon(icon11);
+            l4.setVisible(false);
+            bt14.setVisible(false);
+            bt14.setEnabled(false);
+            
+            //------------------------------------------------------------------------------------------------------------------------//
+            
+            nose.setBounds(870, 340, 175, 55);
+            ImageIcon img4 = new ImageIcon(getClass().getResource("/images/nariz2.png"));
+            ImageIcon icon4 = new ImageIcon(img4.getImage().getScaledInstance(nose.getWidth(),nose.getHeight(),Image.SCALE_DEFAULT));
+            nose.setIcon(icon4);
+            
+            //-Menu-Nose--------------------------------------------------------------------------------------------------------------//
+            
+            l3.setBounds(10, 175, 125, 75);
+            ImageIcon img12 = new ImageIcon(getClass().getResource("/images/nariz2.png"));
+            ImageIcon icon12 = new ImageIcon(img12.getImage().getScaledInstance(l3.getWidth(),l3.getHeight(),Image.SCALE_DEFAULT));
+            l3.setIcon(icon12);
+            l3.setVisible(false);
+            bt15.setVisible(false);
+            bt15.setEnabled(false);
+
+            l2.setBounds(10, 365, 155, 85);
+            ImageIcon img13 = new ImageIcon(getClass().getResource("/images/nariz5.png"));
+            ImageIcon icon13 = new ImageIcon(img13.getImage().getScaledInstance(l2.getWidth(),l2.getHeight(),Image.SCALE_DEFAULT));
+            l2.setIcon(icon13);
+            l2.setVisible(false);
+            bt16.setVisible(false);
+            bt16.setEnabled(false);
+            
+            l1.setBounds(10, 545, 155, 75);
+            ImageIcon img14 = new ImageIcon(getClass().getResource("/images/nariz3.png"));
+            ImageIcon icon14 = new ImageIcon(img14.getImage().getScaledInstance(l1.getWidth(),l1.getHeight(),Image.SCALE_DEFAULT));
+            l1.setIcon(icon14);
+            l1.setVisible(false);
+            bt17.setVisible(false);
+            bt17.setEnabled(false);
+            
+            //------------------------------------------------------------------------------------------------------------------------//
+            
+            cejas.setBounds(870, 220, 185, 75);
+            ImageIcon img5 = new ImageIcon(getClass().getResource("/images/cejas1.png"));
+            ImageIcon icon5 = new ImageIcon(img5.getImage().getScaledInstance(cejas.getWidth(),cejas.getHeight(),Image.SCALE_DEFAULT));
+            cejas.setIcon(icon5);
+            
+            //-Menu-Cejas------------------------------------------------------------------------------------------------------------//
+
+            l10.setBounds(10, 175, 125, 75);
+            ImageIcon img15 = new ImageIcon(getClass().getResource("/images/cejas1.png"));
+            ImageIcon icon15 = new ImageIcon(img15.getImage().getScaledInstance(l10.getWidth(),l10.getHeight(),Image.SCALE_DEFAULT));
+            l10.setIcon(icon15);
+            l10.setVisible(false);
+            bt18.setVisible(false);
+            bt18.setEnabled(false);
+            
+            l11.setBounds(10, 365, 155, 85);
+            ImageIcon img16 = new ImageIcon(getClass().getResource("/images/cejas3.png"));
+            ImageIcon icon16 = new ImageIcon(img16.getImage().getScaledInstance(l11.getWidth(),l11.getHeight(),Image.SCALE_DEFAULT));
+            l11.setIcon(icon16);
+            l11.setVisible(false);
+            bt19.setVisible(false);
+            bt19.setEnabled(false);
+            
+            l12.setBounds(10, 545, 155, 75);
+            ImageIcon img17 = new ImageIcon(getClass().getResource("/images/cejas4.png"));
+            ImageIcon icon17 = new ImageIcon(img17.getImage().getScaledInstance(l12.getWidth(),l12.getHeight(),Image.SCALE_DEFAULT));
+            l12.setIcon(icon17);
+            l12.setVisible(false);
+            bt20.setVisible(false);
+            bt20.setEnabled(false);
+            //-----------------------------------------------------------------------------------------------------------------------//
+            
+            btStart.setEnabled(true);
+        }
+        if("Cabello".equalsIgnoreCase(nameButton))
+        {
+            musicObjectB.playSound(filepathB);   
+            l6.setVisible(false);
+            bt9.setEnabled(false);
+            bt9.setVisible(false);
+            l5.setVisible(false);
+            bt10.setEnabled(false);
+            bt10.setVisible(false);
+            l4.setVisible(false);
+            bt11.setEnabled(false);
+            bt11.setVisible(false);
+            
+            l3.setVisible(false);
+            bt12.setEnabled(false);
+            bt12.setVisible(false);
+            l2.setVisible(false);
+            bt13.setEnabled(false);
+            bt13.setVisible(false);
+            l1.setVisible(false);
+            bt14.setEnabled(false);
+            bt14.setVisible(false);
+            
+            l7.setVisible(true);
+            bt6.setEnabled(true);
+            bt6.setVisible(true);
+            l8.setVisible(true);
+            bt7.setEnabled(true);
+            bt7.setVisible(true);
+            l9.setVisible(true);
+            bt8.setEnabled(true);
+            bt8.setVisible(true);
+            
+            l10.setVisible(false);
+            l10.setEnabled(false);
+            bt15.setVisible(false);
+            bt15.setEnabled(false);
+            l11.setVisible(false);
+            l11.setEnabled(false);
+            bt16.setVisible(false);
+            bt16.setEnabled(false);
+            l12.setVisible(false);
+            l12.setEnabled(false);
+            bt17.setVisible(false);
+            bt17.setEnabled(false);
+            
+            l13.setVisible(false);
+            bt18.setVisible(false);
+            bt18.setEnabled(false);
+            l14.setVisible(false);
+            bt19.setVisible(false);
+            bt19.setEnabled(false);
+            l15.setVisible(false);
+            bt20.setVisible(false);
+            bt20.setEnabled(false);
+        }
+        if("1".equalsIgnoreCase(nameButton)&& act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            hair.setBounds(370, 120, 400, 500);
+            ImageIcon img1 = new ImageIcon(getClass().getResource("/images/cabello1.png"));
+            ImageIcon icon = new ImageIcon(img1.getImage().getScaledInstance(hair.getWidth(),hair.getHeight(),Image.SCALE_DEFAULT));
+            hair.setIcon(icon);
+        }
+        else
+        {
+            if("1".equalsIgnoreCase(nameButton)&& act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                hair.setBounds(370, 120, 300, 350);
+                ImageIcon img1 = new ImageIcon(getClass().getResource("/imagesM/cabello.png"));
+                ImageIcon icon = new ImageIcon(img1.getImage().getScaledInstance(hair.getWidth(),hair.getHeight(),Image.SCALE_DEFAULT));
+                hair.setIcon(icon);
+                btStart.setEnabled(true);
+            }
+        }
+        if("2".equalsIgnoreCase(nameButton)&& act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            hair.setBounds(370, 120, 460, 650);
+            ImageIcon img1 = new ImageIcon(getClass().getResource("/images/cabello2.png"));
+            ImageIcon icon = new ImageIcon(img1.getImage().getScaledInstance(hair.getWidth(),hair.getHeight(),Image.SCALE_DEFAULT));
+            hair.setIcon(icon);
+        }
+        else
+        {
+            if("2".equalsIgnoreCase(nameButton)&& act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                hair.setBounds(370, 120, 280, 386);
+                ImageIcon img1 = new ImageIcon(getClass().getResource("/imagesM/cabello2.png"));
+                ImageIcon icon = new ImageIcon(img1.getImage().getScaledInstance(hair.getWidth(),hair.getHeight(),Image.SCALE_DEFAULT));
+                hair.setIcon(icon);
+            }
+        }
+        if("3".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            hair.setBounds(370, 120, 460, 650);
+            ImageIcon img1 = new ImageIcon(getClass().getResource("/images/cabello5.png"));
+            ImageIcon icon = new ImageIcon(img1.getImage().getScaledInstance(hair.getWidth(),hair.getHeight(),Image.SCALE_DEFAULT));
+            hair.setIcon(icon);
+        }
+        else
+        {
+            if("3".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                hair.setBounds(370, 120, 280, 350);
+                ImageIcon img1 = new ImageIcon(getClass().getResource("/imagesM/cabello5.png"));
+                ImageIcon icon = new ImageIcon(img1.getImage().getScaledInstance(hair.getWidth(),hair.getHeight(),Image.SCALE_DEFAULT));
+                hair.setIcon(icon);
+            }
+        }
+        if("Ojos".equalsIgnoreCase(nameButton))
+        {
+            musicObjectB.playSound(filepathB);
+            l3.setVisible(false);
+            bt12.setEnabled(false);
+            bt12.setVisible(false);
+            l2.setVisible(false);
+            bt13.setEnabled(false);
+            bt13.setVisible(false);
+            l1.setVisible(false);
+            bt14.setEnabled(false);
+            bt14.setVisible(false);
+            
+            l7.setVisible(false);
+            bt6.setEnabled(false);
+            bt6.setVisible(false);
+            l8.setVisible(false);
+            bt7.setEnabled(false);
+            bt7.setVisible(false);
+            l9.setVisible(false);
+            bt8.setEnabled(false);
+            bt8.setVisible(false);
+            
+            l6.setVisible(true);
+            bt9.setEnabled(true);
+            bt9.setVisible(true);
+            l5.setVisible(true);
+            bt10.setEnabled(true);
+            bt10.setVisible(true);
+            l4.setVisible(true);
+            bt11.setEnabled(true);
+            bt11.setVisible(true);
+            
+            l10.setVisible(false);
+            l10.setEnabled(false);
+            bt15.setVisible(false);
+            bt15.setEnabled(false);
+            l11.setVisible(false);
+            l11.setEnabled(false);
+            bt16.setVisible(false);
+            bt16.setEnabled(false);
+            l12.setVisible(false);
+            l12.setEnabled(false);
+            bt17.setVisible(false);
+            bt17.setEnabled(false);
+            
+            l13.setVisible(false);
+            bt18.setVisible(false);
+            bt18.setEnabled(false);
+            l14.setVisible(false);
+            bt19.setVisible(false);
+            bt19.setEnabled(false);
+            l15.setVisible(false);
+            bt20.setVisible(false);
+            bt20.setEnabled(false);
+        }
+        if("4".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            eyes.setBounds(870, 260, 175, 75);
+            ImageIcon img3 = new ImageIcon(getClass().getResource("/images/ojos1.png"));
+            ImageIcon icon3 = new ImageIcon(img3.getImage().getScaledInstance(eyes.getWidth(),eyes.getHeight(),Image.SCALE_DEFAULT));
+            eyes.setIcon(icon3);
+        }
+        else
+        {
+            if("4".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                eyes.setBounds(870, 260, 175, 75);
+                ImageIcon img3 = new ImageIcon(getClass().getResource("/imagesM/ojos1.png"));
+                ImageIcon icon3 = new ImageIcon(img3.getImage().getScaledInstance(eyes.getWidth(),eyes.getHeight(),Image.SCALE_DEFAULT));
+                eyes.setIcon(icon3);
+            }
+        }
+        if("5".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            eyes.setBounds(820, 260, 275, 105);
+            ImageIcon img3 = new ImageIcon(getClass().getResource("/images/ojos2.png"));
+            ImageIcon icon3 = new ImageIcon(img3.getImage().getScaledInstance(eyes.getWidth(),eyes.getHeight(),Image.SCALE_DEFAULT));
+            eyes.setIcon(icon3);
+        }
+        else
+        {
+            if("5".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                eyes.setBounds(870, 260, 255, 80);
+                ImageIcon img3 = new ImageIcon(getClass().getResource("/imagesM/ojos5.png"));
+                ImageIcon icon3 = new ImageIcon(img3.getImage().getScaledInstance(eyes.getWidth(),eyes.getHeight(),Image.SCALE_DEFAULT));
+                eyes.setIcon(icon3);
+            }
+        }
+        if("6".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            eyes.setBounds(820, 260, 275, 95);
+            ImageIcon img3 = new ImageIcon(getClass().getResource("/images/ojos3.png"));
+            ImageIcon icon3 = new ImageIcon(img3.getImage().getScaledInstance(eyes.getWidth(),eyes.getHeight(),Image.SCALE_DEFAULT));
+            eyes.setIcon(icon3);
+        }
+        else
+        {
+            if("6".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                eyes.setBounds(870, 260, 225, 84);
+                ImageIcon img3 = new ImageIcon(getClass().getResource("/imagesM/ojos3.png"));
+                ImageIcon icon3 = new ImageIcon(img3.getImage().getScaledInstance(eyes.getWidth(),eyes.getHeight(),Image.SCALE_DEFAULT));
+                eyes.setIcon(icon3);
+            }
+                    
+        }
+        if("Nariz".equalsIgnoreCase(nameButton))
+        {
+            musicObjectB.playSound(filepathB);
+            l3.setVisible(true);
+            bt12.setEnabled(true);
+            bt12.setVisible(true);
+            l2.setVisible(true);
+            bt13.setEnabled(true);
+            bt13.setVisible(true);
+            l1.setVisible(true);
+            bt14.setEnabled(true);
+            bt14.setVisible(true);
+            
+            l6.setVisible(false);
+            bt9.setEnabled(false);
+            bt9.setVisible(false);
+            l5.setVisible(false);
+            bt10.setEnabled(false);
+            bt10.setVisible(false);
+            l4.setVisible(false);
+            bt11.setEnabled(false);
+            bt11.setVisible(false);
+            
+            l7.setVisible(false);
+            bt6.setEnabled(false);
+            bt6.setVisible(false);
+            l8.setVisible(false);
+            bt7.setEnabled(false);
+            bt7.setVisible(false);
+            l9.setVisible(false);
+            bt8.setEnabled(false);
+            bt8.setVisible(false);
+            
+            l10.setVisible(false);
+            l10.setEnabled(false);
+            bt15.setVisible(false);
+            bt15.setEnabled(false);
+            l11.setVisible(false);
+            l11.setEnabled(false);
+            bt16.setVisible(false);
+            bt16.setEnabled(false);
+            l12.setVisible(false);
+            l12.setEnabled(false);
+            bt17.setVisible(false);
+            bt17.setEnabled(false);
+            
+            l13.setVisible(false);
+            bt18.setVisible(false);
+            bt18.setEnabled(false);
+            l14.setVisible(false);
+            bt19.setVisible(false);
+            bt19.setEnabled(false);
+            l15.setVisible(false);
+            bt20.setVisible(false);
+            bt20.setEnabled(false);
+        }
+        if("10".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            nose.setBounds(870, 340, 175, 55);
+            ImageIcon img4 = new ImageIcon(getClass().getResource("/images/nariz2.png"));
+            ImageIcon icon4 = new ImageIcon(img4.getImage().getScaledInstance(nose.getWidth(),nose.getHeight(),Image.SCALE_DEFAULT));
+            nose.setIcon(icon4);
+
+        }
+        else
+        {
+            if("10".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                nose.setBounds(870, 340, 199, 80);
+                ImageIcon img4 = new ImageIcon(getClass().getResource("/imagesM/nariz2.png"));
+                ImageIcon icon4 = new ImageIcon(img4.getImage().getScaledInstance(nose.getWidth(),nose.getHeight(),Image.SCALE_DEFAULT));
+                nose.setIcon(icon4);//5 3
+            }
+        }
+        if("11".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            nose.setBounds(870, 340, 175, 55);
+            ImageIcon img4 = new ImageIcon(getClass().getResource("/images/nariz5.png"));
+            ImageIcon icon4 = new ImageIcon(img4.getImage().getScaledInstance(nose.getWidth(),nose.getHeight(),Image.SCALE_DEFAULT));
+            nose.setIcon(icon4);
+        }
+        else
+        {
+            if("11".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                nose.setBounds(870, 340, 175, 55);
+                ImageIcon img4 = new ImageIcon(getClass().getResource("/imagesM/nariz5.png"));
+                ImageIcon icon4 = new ImageIcon(img4.getImage().getScaledInstance(nose.getWidth(),nose.getHeight(),Image.SCALE_DEFAULT));
+                nose.setIcon(icon4);
+            }
+        }
+        if("12".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            nose.setBounds(870, 340, 175, 55);
+            ImageIcon img4 = new ImageIcon(getClass().getResource("/images/nariz3.png"));
+            ImageIcon icon4 = new ImageIcon(img4.getImage().getScaledInstance(nose.getWidth(),nose.getHeight(),Image.SCALE_DEFAULT));
+            nose.setIcon(icon4);
+        }
+        else
+        {
+            if("12".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                nose.setBounds(870, 340, 195, 70);
+                ImageIcon img4 = new ImageIcon(getClass().getResource("/imagesM/nariz8.png"));
+                ImageIcon icon4 = new ImageIcon(img4.getImage().getScaledInstance(nose.getWidth(),nose.getHeight(),Image.SCALE_DEFAULT));
+                nose.setIcon(icon4);
+            }
+        }
+        if("Cejas".equalsIgnoreCase(nameButton))
+        {
+            musicObjectB.playSound(filepathB);
+            l6.setVisible(false);
+            bt9.setEnabled(false);
+            bt9.setVisible(false);
+            l5.setVisible(false);
+            bt10.setEnabled(false);
+            bt10.setVisible(false);
+            l4.setVisible(false);
+            bt11.setEnabled(false);
+            bt11.setVisible(false);
+            
+            l3.setVisible(false);
+            bt12.setEnabled(false);
+            bt12.setVisible(false);
+            l2.setVisible(false);
+            bt13.setEnabled(false);
+            bt13.setVisible(false);
+            l1.setVisible(false);
+            bt14.setEnabled(false);
+            bt14.setVisible(false);
+            
+            l7.setVisible(false);
+            bt6.setEnabled(false);
+            bt6.setVisible(false);
+            l8.setVisible(false);
+            bt7.setEnabled(false);
+            bt7.setVisible(false);
+            l9.setVisible(false);
+            bt8.setEnabled(false);
+            bt8.setVisible(false);
+            
+            l10.setVisible(true);
+            l10.setEnabled(true);
+            bt15.setVisible(true);
+            bt15.setEnabled(true);
+            l11.setVisible(true);
+            l11.setEnabled(true);
+            bt16.setVisible(true);
+            bt16.setEnabled(true);
+            l12.setVisible(true);
+            l12.setEnabled(true);
+            bt17.setVisible(true);
+            bt17.setEnabled(true);
+            
+            l13.setVisible(false);
+            bt18.setVisible(false);
+            bt18.setEnabled(false);
+            l14.setVisible(false);
+            bt19.setVisible(false);
+            bt19.setEnabled(false);
+            l15.setVisible(false);
+            bt20.setVisible(false);
+            bt20.setEnabled(false);
+        }
+        if("7".equalsIgnoreCase(nameButton) && act == false)//3 4
+        {
+            musicObjectC.playSound2(filepathC); 
+            cejas.setBounds(870, 220, 185, 75);
+            ImageIcon img5 = new ImageIcon(getClass().getResource("/images/cejas1.png"));
+            ImageIcon icon5 = new ImageIcon(img5.getImage().getScaledInstance(cejas.getWidth(),cejas.getHeight(),Image.SCALE_DEFAULT));
+            cejas.setIcon(icon5);
+        }
+        else
+        {
+            if("7".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                cejas.setBounds(870, 220, 185, 75);
+                ImageIcon img5 = new ImageIcon(getClass().getResource("/imagesM/cejas1.png"));
+                ImageIcon icon5 = new ImageIcon(img5.getImage().getScaledInstance(cejas.getWidth(),cejas.getHeight(),Image.SCALE_DEFAULT));
+                cejas.setIcon(icon5);
+            }
+        }
+        if("8".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            cejas.setBounds(840, 220, 255, 75);
+            ImageIcon img5 = new ImageIcon(getClass().getResource("/images/cejas3.png"));
+            ImageIcon icon5 = new ImageIcon(img5.getImage().getScaledInstance(cejas.getWidth(),cejas.getHeight(),Image.SCALE_DEFAULT));
+            cejas.setIcon(icon5);
+        }
+        else
+        {
+            if("8".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                cejas.setBounds(870, 220, 185, 75);
+                ImageIcon img5 = new ImageIcon(getClass().getResource("/imagesM/cejas2.png"));
+                ImageIcon icon5 = new ImageIcon(img5.getImage().getScaledInstance(cejas.getWidth(),cejas.getHeight(),Image.SCALE_DEFAULT));
+                cejas.setIcon(icon5);
+            }    
+        }
+        if("9".equalsIgnoreCase(nameButton) && act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            cejas.setBounds(820, 220, 285, 75);
+            ImageIcon img5 = new ImageIcon(getClass().getResource("/images/cejas4.png"));
+            ImageIcon icon5 = new ImageIcon(img5.getImage().getScaledInstance(cejas.getWidth(),cejas.getHeight(),Image.SCALE_DEFAULT));
+            cejas.setIcon(icon5);
+        }
+        else
+        {
+            if("9".equalsIgnoreCase(nameButton) && act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                cejas.setBounds(820, 220, 245, 75);
+                ImageIcon img5 = new ImageIcon(getClass().getResource("/imagesM/cejas4.png"));
+                ImageIcon icon5 = new ImageIcon(img5.getImage().getScaledInstance(cejas.getWidth(),cejas.getHeight(),Image.SCALE_DEFAULT));
+                cejas.setIcon(icon5);
+            }
+        }
+        if("Boca".equalsIgnoreCase(nameButton))
+        {
+            musicObjectB.playSound(filepathB);
+            l6.setVisible(false);
+            bt9.setEnabled(false);
+            bt9.setVisible(false);
+            l5.setVisible(false);
+            bt10.setEnabled(false);
+            bt10.setVisible(false);
+            l4.setVisible(false);
+            bt11.setEnabled(false);
+            bt11.setVisible(false);
+            
+            l3.setVisible(false);
+            bt12.setEnabled(false);
+            bt12.setVisible(false);
+            l2.setVisible(false);
+            bt13.setEnabled(false);
+            bt13.setVisible(false);
+            l1.setVisible(false);
+            bt14.setEnabled(false);
+            bt14.setVisible(false);
+            
+            l7.setVisible(false);
+            bt6.setEnabled(false);
+            bt6.setVisible(false);
+            l8.setVisible(false);
+            bt7.setEnabled(false);
+            bt7.setVisible(false);
+            l9.setVisible(false);
+            bt8.setEnabled(false);
+            bt8.setVisible(false);
+            
+            l10.setVisible(false);
+            l10.setEnabled(false);
+            bt15.setVisible(false);
+            bt15.setEnabled(false);
+            l11.setVisible(false);
+            l11.setEnabled(false);
+            bt16.setVisible(false);
+            bt16.setEnabled(false);
+            l12.setVisible(false);
+            l12.setEnabled(false);
+            bt17.setVisible(false);
+            bt17.setEnabled(false);
+            
+            l13.setVisible(true);
+            bt18.setVisible(true);
+            bt18.setEnabled(true);
+            l14.setVisible(true);
+            bt19.setVisible(true);
+            bt19.setEnabled(true);
+            l15.setVisible(true);
+            bt20.setVisible(true);
+            bt20.setEnabled(true);
+        }
+        if("13".equalsIgnoreCase(nameButton)&& act == false) // 4 2 5
+        {
+            musicObjectC.playSound2(filepathC); 
+            boca.setBounds(900, 400, 115, 45);
+            ImageIcon img2 = new ImageIcon(getClass().getResource("/images/boca1.png"));
+            ImageIcon icon2 = new ImageIcon(img2.getImage().getScaledInstance(boca.getWidth(),boca.getHeight(),Image.SCALE_DEFAULT));
+            boca.setIcon(icon2);
+        }
+        else
+        {
+            if("13".equalsIgnoreCase(nameButton)&& act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                boca.setBounds(900, 400, 165, 60);
+                ImageIcon img2 = new ImageIcon(getClass().getResource("/imagesM/boca4.png"));
+                ImageIcon icon2 = new ImageIcon(img2.getImage().getScaledInstance(boca.getWidth(),boca.getHeight(),Image.SCALE_DEFAULT));
+                boca.setIcon(icon2); 
+            }
+        }
+        if("14".equalsIgnoreCase(nameButton)&& act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            boca.setBounds(900, 400, 145, 50);
+            ImageIcon img2 = new ImageIcon(getClass().getResource("/images/boca2.png"));
+            ImageIcon icon2 = new ImageIcon(img2.getImage().getScaledInstance(boca.getWidth(),boca.getHeight(),Image.SCALE_DEFAULT));
+            boca.setIcon(icon2);
+        }
+        else
+        {
+            if("14".equalsIgnoreCase(nameButton)&& act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                boca.setBounds(900, 400, 115, 45);
+                ImageIcon img2 = new ImageIcon(getClass().getResource("/imagesM/boca2.png"));
+                ImageIcon icon2 = new ImageIcon(img2.getImage().getScaledInstance(boca.getWidth(),boca.getHeight(),Image.SCALE_DEFAULT));
+                boca.setIcon(icon2);
+            }
+        }
+        if("15".equalsIgnoreCase(nameButton)&& act == false)
+        {
+            musicObjectC.playSound2(filepathC); 
+            boca.setBounds(900, 400, 180, 70);
+            ImageIcon img2 = new ImageIcon(getClass().getResource("/images/boca3.png"));
+            ImageIcon icon2 = new ImageIcon(img2.getImage().getScaledInstance(boca.getWidth(),boca.getHeight(),Image.SCALE_DEFAULT));
+            boca.setIcon(icon2);
+        }
+        else
+        {
+            if("15".equalsIgnoreCase(nameButton)&& act == true)
+            {
+                musicObjectC.playSound2(filepathC); 
+                boca.setBounds(900, 400, 195, 65);
+                ImageIcon img2 = new ImageIcon(getClass().getResource("/imagesM/boca5.png"));
+                ImageIcon icon2 = new ImageIcon(img2.getImage().getScaledInstance(boca.getWidth(),boca.getHeight(),Image.SCALE_DEFAULT));
+                boca.setIcon(icon2);
+            }
+        }
+    }
+    
+    public boolean delete(String name, String password){
+        
+        boolean find = false;
+        
+        int i = 0;
+        
+        while(find == false && i < lista.size())
+        {
+            if(lista.get(i).getName().compareToIgnoreCase(name) == 0 || lista.get(i).getPassword().compareToIgnoreCase(password) == 0)
+            {
+                find = true;
+            }
+            else
+            {
+                i++;
+            }
+        }
+        if(find)
+        {
+            JOptionPane.showMessageDialog(null, "Usuario eliminado" + '\n' + lista.get(i).getName() + '\n' + lista.get(i).getPassword());
+            lista.remove(i);
+            user.setText("");
+            pass.setText("");
+            return false;       
+        }
+        else
+        {
+           JOptionPane.showMessageDialog(null, "No existe.");
+           return true;
+        }
+    }
+    
+    public boolean search(String name, String password){
+        
+        boolean find = false;
+        
+        int i = 0;
+        
+        while(find == false && i < lista.size())
+        {
+            if(lista.get(i).getName().compareToIgnoreCase(name) == 0)
+            {
+                find = true;
+            }
+            else
+            {
+                i++;
+            }
+        }
+        if(find)
+        {
+            JOptionPane.showMessageDialog(null, "Usuario encontrado" + '\n' + lista.get(i).getName() + '\n' + lista.get(i).getPassword());
+            user.setText(lista.get(i).getName());
+            pass.setText(lista.get(i).getPassword());
+            return false;       
+        }
+        else
+        {
+           //JOptionPane.showMessageDialog(null, "No existe.");
+           return true;
+        }
+    }
+
+    /*@Override
+    public int print(Graphics g, PageFormat pF, int pageIndex) throws PrinterException {
+        if (pageIndex == 0)
+    	{
+ 
+          // translate the graphics for margins
+    	  g.translate(100, 100);
+ 
+    	  // create a panel with a label and a textfield
+    	  JPanel myPanel = new javax.swing.JPanel();
+    	  myPanel.setName("myPanel");
+    	  myPanel.setBorder(new javax.swing.border.EtchedBorder());
+    	  myPanel.setBounds(new java.awt.Rectangle(0, 0, 300, 300));
+    	  // create a label
+    	  JLabel myLabel = new JLabel("MyLabel");
+    	  myLabel.setText("Label");
+    	  myLabel.setLocation(10, 10);
+    	  myLabel.setSize(50, 20);
+    	  myLabel.setVisible(true);
+    	  // add label to panel
+    	  myPanel.add(myLabel);
+    	  // create a text field 
+    	  TextField myTextField = new TextField();
+    	  myTextField.setText("My Text");
+    	  myTextField.setLocation(65, 10);
+    	  myTextField.setSize(50, 20);
+    	  myTextField.setVisible(true);
+    	  // add text field to panel
+    	  myPanel.add(myTextField);
+    	 // you can add any swing component here
+    	 // ..... 
+    	 // revalidate and repaint the panel
+    	 myPanel.revalidate();
+         myPanel.repaint();
+    	 // print the panel to the graphics on page 0
+    	 myPanel.print (g);
+    	 return Printable.PAGE_EXISTS;
+    	}
+    	else
+    	{
+    	 return Printable.NO_SUCH_PAGE;
+    	}
+    }*/
+}

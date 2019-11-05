@@ -1,0 +1,20 @@
+package retratodef;
+
+import java.applet.AudioClip;
+
+public class SonidoMenu implements ISonido{
+
+    @Override
+    public void sonido() {
+        
+        try{
+            AudioClip menuSound;
+            menuSound = java.applet.Applet.newAudioClip(getClass().getResource("/Sound/Metal Gear Solid 2 Soundtrack - Tanker.wav"));
+            menuSound.play();
+        }catch(Exception e){
+            
+        }
+        
+    }
+ 
+}
